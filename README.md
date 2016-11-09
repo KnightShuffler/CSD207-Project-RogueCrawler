@@ -1,2 +1,3 @@
 # CSD207-Project-RogueCrawler
-Group Name:  Group members: Harsh Manral, Swagat Kumar, Siddharth Nishtala, Kranthi Kumar Madhavaram, Pratyaksh Tandon
+Group Name: 'JavaBoiz'
+Group members: Swagat Kumar, Harsh Manral, Siddharth Nishtala, Kranthi Kumar Madhavaram, Pratyaksh Tandon
