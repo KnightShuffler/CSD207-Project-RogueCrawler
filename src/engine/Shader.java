@@ -1,5 +1,6 @@
 package engine;
 
+import static org.lwjgl.opengl.GL31.*;
 import static org.lwjgl.opengl.GL20.*;
 
 import java.io.BufferedReader;
@@ -112,14 +113,22 @@ public class Shader {
 	//setting an integer uniform
 	public void setUniform(String name, int value) {
 		int location = glGetUniformLocation(m_programID, name);
-		if (location != -1) {
+		if (location != GL_INVALID_INDEX) {
+			glUniform1i(location, value);
+		}
+	}
+	
+	//setting a float integer
+	public void setUniform(String name, float value) {
+		int location = glGetUniformLocation(m_programID, name);
+		if (location != GL_INVALID_INDEX) {
 			glUniform1f(location, value);
 		}
 	}
 	
 	public void setUniform(String name, Matrix4f value) {
 		int location = glGetUniformLocation(m_programID, name);
-		if (location != -1) {
+		if (location != GL_INVALID_INDEX) {
 			FloatBuffer buffer = BufferUtils.createFloatBuffer(16);
 			value.get(buffer);
 			glUniformMatrix4fv(location, false, buffer);

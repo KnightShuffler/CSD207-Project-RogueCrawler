@@ -1,8 +1,12 @@
 import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.opengl.GL11.*;
 
 import org.lwjgl.opengl.GL;
 
-import engine.*;
+import engine.InputManager;
+import engine.Shader;
+import engine.Sprite;
+import engine.Window;
 
 public class Main {
 
@@ -22,10 +26,11 @@ public class Main {
 		GL.createCapabilities();
 		
 		Sprite sprite = new Sprite();
-		sprite.init(-1f, -1f, .5f, .5f);
+		sprite.init(-1f, -1f, 2.f, 2.f);
 		
 		Shader shader = new Shader("./Shaders/vertexShader.vert", "./Shaders/fragmentShader.frag");
 		shader.addAttributes("vertexPosition");
+		float time = 0.f;
 		
 		while (!window.shouldClose()) {
 			window.takeInput();
@@ -35,11 +40,19 @@ public class Main {
 			glfwPollEvents();
 			window.getInputManager().update();
 			
+			glClearDepth(1.0);
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			
 			shader.use();
+			
+			shader.setUniform("time", time);
+			
 			sprite.draw();
 			shader.unuse();
 			
 			window.swapBuffers();
+			
+			time += 0.1f;
 		}
 	}
 
