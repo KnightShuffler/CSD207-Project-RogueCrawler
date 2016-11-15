@@ -14,6 +14,8 @@ public class Window {
 	
 	private boolean m_isFullScreen;
 	
+	private InputManager m_inputManager;
+	
 	public static void setCallbacks() {
 		//set glfw error callback to use System.err
 		//this allows us to check for glfw errors in the console
@@ -24,6 +26,7 @@ public class Window {
 	public Window() {
 		setResolution(DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT);
 		setFullScreen(false);
+		m_inputManager = new InputManager();
 	}
 	
 	//Takes in the resolution and if the window should be fullscreen
@@ -96,5 +99,14 @@ public class Window {
 	//swaps the buffers to which the renderer is rendering
 	public void swapBuffers() {
 		glfwSwapBuffers(m_windowID);
+	}
+	
+	//takes the input
+	public void takeInput() {
+		m_inputManager.takeInput(m_windowID);
+	}
+	
+	public InputManager getInputManager() {
+		return m_inputManager;
 	}
 }
