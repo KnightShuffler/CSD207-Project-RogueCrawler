@@ -1,6 +1,7 @@
 package engine;
 
 import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.opengl.GL11.*;
 
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
@@ -26,6 +27,7 @@ public class Window {
 	public Window() {
 		setResolution(DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT);
 		setFullScreen(false);
+		glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 		m_inputManager = new InputManager();
 	}
 	
@@ -33,6 +35,7 @@ public class Window {
 	public Window(int w, int h, boolean f) {
 		setResolution(w, h);
 		setFullScreen(f);
+		glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 	}
 	
 	//creates the window
