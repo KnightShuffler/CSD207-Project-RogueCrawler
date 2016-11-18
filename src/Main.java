@@ -26,11 +26,25 @@ public class Main {
 		GL.createCapabilities();
 		
 		Sprite sprite = new Sprite();
-		sprite.init(-1f, -1f, 2.f, 2.f);
+		
+		float [] vertexData = {
+			-1f, -1f,
+			-1f, 0f,
+			0f, 0f,
+			0f, -1f
+		};
+		
+		int [] indices = {
+			0, 1, 2,
+			2, 3, 0
+		};
+		
+		sprite.init(vertexData, indices);
 		
 		Shader shader = new Shader("./Shaders/vertexShader.vert", "./Shaders/fragmentShader.frag");
 		shader.addAttributes("vertexPosition");
-		float time = 0.f;
+		
+		//float time = 0.f;
 		
 		while (!window.shouldClose()) {
 			window.takeInput();
@@ -45,14 +59,14 @@ public class Main {
 			
 			shader.use();
 			
-			shader.setUniform("time", time);
+			//shader.setUniform("time", time);
 			
 			sprite.draw();
+			
 			shader.unuse();
 			
 			window.swapBuffers();
-			
-			time += 0.1f;
+			//time += 0.1f;
 		}
 	}
 
