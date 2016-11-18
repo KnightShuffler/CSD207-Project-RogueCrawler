@@ -16,10 +16,12 @@ public class Sprite {
 	private int drawCount;
 	
 	private int vboID = 0;
+	private int cID = 0;
 	private int indexID = 0;
 	
 	public Sprite() {
 		vboID = 0;
+		cID = 0;
 		indexID = 0;
 	}
 	
@@ -29,13 +31,20 @@ public class Sprite {
 		}
 	}
 	
-	public void init(float[] vertexData, int[] indices) {
+	public void init(float[] vertexData, float[] colorData, int[] indices) {
 		if (vboID == 0) {
 			vboID = glGenBuffers();
 		}
 		
 		glBindBuffer(GL_ARRAY_BUFFER, vboID);
 		glBufferData(GL_ARRAY_BUFFER, createBuffer(vertexData), GL_STATIC_DRAW);
+		
+		if (cID == 0) {
+			cID = glGenBuffers();
+		}
+		
+		glBindBuffer(GL_ARRAY_BUFFER, cID);
+		glBufferData(GL_ARRAY_BUFFER, createBuffer(colorData), GL_STATIC_DRAW);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		
 		if (indexID == 0) {
@@ -50,14 +59,18 @@ public class Sprite {
 	}
 	
 	public void draw() {
-		glBindBuffer(GL_ARRAY_BUFFER, vboID);
-		
 		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 2, GL_FLOAT, false, 0, 0);
+		glEnableVertexAttribArray(1);
+		glBindBuffer(GL_ARRAY_BUFFER, vboID);
+		glVertexAttribPointer(0, 2, GL_FLOAT, false, /*stride*/(2) << 2, 0 << 2);
+		
+		glBindBuffer(GL_ARRAY_BUFFER, cID);
+		glVertexAttribPointer(1, 4, GL_FLOAT, false, /*stride*/(4) << 2, 0 << 2);
 		
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexID);
 		glDrawElements(GL_TRIANGLES, drawCount, GL_UNSIGNED_INT, 0);
 		
+		glDisableVertexAttribArray(1);
 		glDisableVertexAttribArray(0);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
