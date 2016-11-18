@@ -3,6 +3,7 @@ package engine;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengl.GL30.*;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
@@ -15,13 +16,13 @@ public class Sprite {
 	
 	private int drawCount;
 	
+	private int vaoID = 0;
 	private int vboID = 0;
-	//private int cID = 0;
 	private int indexID = 0;
 	
 	public Sprite() {
+		vaoID = 0;
 		vboID = 0;
-		//cID = 0;
 		indexID = 0;
 	}
 	
@@ -31,14 +32,19 @@ public class Sprite {
 		}
 	}
 	
-	public void init(float[] vertexData/*, float[] colorData*/, int[] indices) {
+	public void init(float[] vertexData, int[] indices) {
+		if (vaoID == 0) {
+			vaoID = glGenVertexArrays();
+		}
+		
+		glBindVertexArray(vaoID);
+		
 		if (vboID == 0) {
 			vboID = glGenBuffers();
 		}
 		
 		glBindBuffer(GL_ARRAY_BUFFER, vboID);
 		glBufferData(GL_ARRAY_BUFFER, createBuffer(vertexData), GL_STATIC_DRAW);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		
 		if (indexID == 0) {
 			indexID = glGenBuffers();
@@ -48,6 +54,10 @@ public class Sprite {
 		
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexID);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, createBuffer(indices), GL_STATIC_DRAW);
+		
+		glBindVertexArray(0);
+		
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	}
 	
