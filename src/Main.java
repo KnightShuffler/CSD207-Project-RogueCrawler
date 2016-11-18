@@ -29,23 +29,16 @@ public class Main {
 		
 		float [] vertexData = {
 			-1f, -1f,		//v
-//			1f, 0f, 0f, 1f,	//c
+			1f, 0f, 0f, 1f,	//c
 			
 			-1f, 0f,		//v
-//			0f, 1f, 0f, 1f,	//c
+			0f, 1f, 0f, 1f,	//c
 			
 			0f, 0f,			//v
-//			0f, 0f, 1f, 1f,	//c
+			0f, 0f, 1f, 1f,	//c
 			
 			0f, -1f,		//v
-//			1f, 1f, 1f, 1f	//c
-		};
-		
-		float [] colorData = {
-				1f, 0f, 0f, 1f,
-				0f, 1f, 0f, 1f,
-				0f, 0f, 1f, 1f,
-				1f, 1f, 1f, 1f,
+			1f, 1f, 1f, 1f	//c
 		};
 		
 		int [] indices = {
@@ -53,7 +46,7 @@ public class Main {
 			2, 3, 0
 		};
 		
-		sprite.init(vertexData, colorData, indices);
+		sprite.init(vertexData, indices);
 		
 		Shader shader = new Shader("./Shaders/vertexShader.vert", "./Shaders/fragmentShader.frag");
 		shader.addAttributes("vertexPosition");
