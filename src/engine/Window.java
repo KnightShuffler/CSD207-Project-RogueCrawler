@@ -7,109 +7,73 @@ import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 
 public class Window {
-	private long m_windowID;
-	private int m_width, m_height;
+	private long windowHandle;
+	private int width, height;
+	private boolean isFullScreen;
+	public final int DEFAULT_WINDOW_WIDTH = 640;
+	public final int DEFAULT_WINDOW_HEIGHT = 480;
 	
-	private static final int DEFAULT_SCREEN_WIDTH = 640;
-	private static final int DEFAULT_SCREEN_HEIGHT = 480;
+	private InputManager inputManager;
 	
-	private boolean m_isFullScreen;
-	
-	private InputManager m_inputManager;
-	
-	public static void setCallbacks() {
-		//set glfw error callback to use System.err
-		//this allows us to check for glfw errors in the console
+	public static void setCallBacks() {
 		glfwSetErrorCallback(GLFWErrorCallback.createPrint(System.err));
 	}
 	
-	//Default constructor, makes a windowed window of the default size
 	public Window() {
-		setResolution(DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT);
-		setFullScreen(false);
+		width = DEFAULT_WINDOW_WIDTH;
+		height = DEFAULT_WINDOW_HEIGHT;
+		isFullScreen = false;
 		glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-		m_inputManager = new InputManager();
+		
+		inputManager = new InputManager();
 	}
 	
-	//Takes in the resolution and if the window should be fullscreen
 	public Window(int w, int h, boolean f) {
-		setResolution(w, h);
-		setFullScreen(f);
+		width = w;
+		height = h;
+		isFullScreen = f;
 		glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+		
+		inputManager = new InputManager();
 	}
 	
-	//creates the window
-	public void createWindow(String windowTitle) {
-		//Create the window and store its ID
-		m_windowID = glfwCreateWindow(
-				m_width,
-				m_height,
-				windowTitle,
-				m_isFullScreen ? glfwGetPrimaryMonitor() : 0,
+	public void createWindow(String title) {
+		windowHandle = glfwCreateWindow(
+				width,
+				height,
+				title,
+				isFullScreen ? glfwGetPrimaryMonitor() : 0,
 				0);
-		
-		//if the window failed to be created, then its ID will be set to 0, throw an illegal state exception
-		if (m_windowID == 0) {
-			throw new IllegalStateException("Window " + windowTitle + " was not created");
+		if (windowHandle == 0) {
+			throw new IllegalStateException("Window was not created");
 		}
 		
-		//if the window isn't fullscreen center the window position
-		if (!m_isFullScreen) {
-			//Save the video mode of the primary monitor (this contains all of the display's details
+		if (!isFullScreen) {
 			GLFWVidMode vid = glfwGetVideoMode(glfwGetPrimaryMonitor());
-			//Set the position to the center
-			glfwSetWindowPos(m_windowID, (vid.width() - m_width) / 2, (vid.height() - m_height) / 2);
-			//Make the window visible
-			glfwShowWindow(m_windowID);
+			glfwSetWindowPos(windowHandle, (vid.width() - width) / 2, (vid.height() - height) / 2);
+			glfwShowWindow(windowHandle);
 		}
 		
-		//create the openGL context for the window
-		glfwMakeContextCurrent(m_windowID);
+		glfwMakeContextCurrent(windowHandle);
 	}
 	
-	//Sets the resolution of the fullscreen window or the size of the windowed window
-	public void setResolution(int w, int h) {
-		m_width = w;
-		m_height = h;
-	}
+	public int getWidth() { return width; }
+	public int getHeight() { return height; }
+	public boolean isFullScreen() { return isFullScreen; }
 	
-	public int getWidth() {
-		return m_width;
-	}
+	public boolean shouldClose() { return glfwWindowShouldClose(windowHandle); }
+	public void close() { glfwSetWindowShouldClose(windowHandle, true); }
 	
-	public int getHeight() {
-		return m_height;
-	}
+	public InputManager getInputManager() { return inputManager; }
 	
-	public void setFullScreen(boolean f) {
-		m_isFullScreen = f;
-	}
-	
-	public boolean isFullScreen() {
-		return m_isFullScreen;
-	}
-	
-	//returns whether the window should close
-	public boolean shouldClose() {
-		return glfwWindowShouldClose(m_windowID);
-	}
-	
-	//sets the shouldClose value to true
-	public void closeWindow() {
-		glfwSetWindowShouldClose(m_windowID, true);
-	}
-	
-	//swaps the buffers to which the renderer is rendering
-	public void swapBuffers() {
-		glfwSwapBuffers(m_windowID);
-	}
-	
-	//takes the input
 	public void takeInput() {
-		m_inputManager.takeInput(m_windowID);
+		inputManager.takeInput(windowHandle);
 	}
 	
-	public InputManager getInputManager() {
-		return m_inputManager;
+	public void updateInput() {
+		glfwPollEvents();
+		inputManager.update();
 	}
+	
+	public void swapBuffers() { glfwSwapBuffers(windowHandle); }
 }

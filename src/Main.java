@@ -1,80 +1,109 @@
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
-
 import org.lwjgl.opengl.GL;
 
 import engine.InputManager;
-import engine.Shader;
+import engine.ShaderProgram;
 import engine.Sprite;
+import engine.Texture;
 import engine.Window;
 
 public class Main {
 
 	public static void main(String[] args) {
-		//Temporarily checking functionality
+		Window.setCallBacks();
 		
-		if (!glfwInit()) {
-			throw new IllegalStateException("GLFW did not initialize");
+		try {
+			if (!glfwInit()) {
+				throw new IllegalStateException("GLFW was not initialized");
+			}
+		} catch (IllegalStateException e) {
+			e.printStackTrace();
 		}
 		
 		InputManager.init();
+		InputManager.addKey(GLFW_KEY_ESCAPE);
 		
 		Window window = new Window();
-		window.createWindow("Test");
+		try {
+			window.createWindow("Test");
+		} catch (IllegalStateException e) {
+			e.printStackTrace();
+		}
 		
-		//create context
 		GL.createCapabilities();
+		glEnable(GL_TEXTURE_2D);
 		
-		Sprite sprite = new Sprite();
-		
-		float [] vertexData = {
-			-1f, -1f,		//v
-			1f, 0f, 0f, 1f,	//c
+		float[] vertexData1 = {
+			0f, 0f,
+			1f, 0f, 0f, 1f,
+			0f, 0f,
 			
-			-1f, 0f,		//v
-			0f, 1f, 0f, 1f,	//c
+			1f, 0f,
+			0f, 1f, 0f, 1f,
+			1f, 0f,
 			
-			0f, 0f,			//v
-			0f, 0f, 1f, 1f,	//c
+			1f, 1f,
+			0f, 0f, 1f, 1f,
+			1f, 1f,
 			
-			0f, -1f,		//v
-			1f, 1f, 1f, 1f	//c
+			0f, 1f,
+			1f, 1f, 1f, 1f,
+			0f, 1f,
 		};
 		
-		int [] indices = {
+		float[] vertexData2 = {
+				-1f, -1f,
+				1f, 0f, 0f, 1f,
+				0f, 0f,
+				
+				0f, -1f,
+				0f, 1f, 0f, 1f,
+				1f, 0f,
+				
+				0f, 0f,
+				0f, 0f, 1f, 1f,
+				1f, 1f,
+				
+				-1f, 0f,
+				1f, 1f, 1f, 1f,
+				0f, 1f,
+			};
+		
+		int[] indices = {
 			0, 1, 2,
-			2, 3, 0
+			2, 3, 0,
 		};
 		
-		sprite.init(vertexData, indices);
+		Sprite sprite1 = new Sprite(vertexData1, indices);
+		Sprite sprite2 = new Sprite(vertexData2, indices);
 		
-		Shader shader = new Shader("./Shaders/vertexShader.vert", "./Shaders/fragmentShader.frag");
-		shader.addAttributes("vertexPosition");
-		shader.addAttributes("vertexColor");
+		Texture texture1 = new Texture("./textures/kumiko legs.jpg");
+		Texture texture2 = new Texture("./textures/1.png");
 		
-		//float time = 0.f;
+		ShaderProgram shader = new ShaderProgram("./shaders/vertexShader.vs", "./shaders/fragmentShader.fs");
+		
+		float t = 0f;
 		
 		while (!window.shouldClose()) {
 			window.takeInput();
-			if (window.getInputManager().isKeyReleased(GLFW_KEY_ESCAPE)) {
-				window.closeWindow();
+			if (window.getInputManager().isReleased(GLFW_KEY_ESCAPE)) {
+				window.close();
 			}
-			glfwPollEvents();
-			window.getInputManager().update();
-			
+			window.updateInput();
 			glClearDepth(1.0);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			
-			shader.use();
-			
-			//shader.setUniform("time", time);
-			
-			sprite.draw();
-			
-			shader.unuse();
+			shader.bind();
+			shader.setUniform("mySampler", 0);
+			shader.setUniform("time", t);
+			texture1.bind(0);
+			sprite1.drawShader();
+			texture2.bind(0);
+			sprite2.drawShader();
 			
 			window.swapBuffers();
-			//time += 0.1f;
+			
+			t+=0.01f;
 		}
 	}
 
