@@ -1,6 +1,7 @@
 package engine;
 
 import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
 import java.util.Vector;
 
 import org.lwjgl.BufferUtils;
@@ -44,5 +45,39 @@ public class Vertex {
 	void setUV(float u, float v) {
 		uv.u = u;
 		uv.v = v;
+	}
+	
+	public static FloatBuffer createVertexBuffer(Vector<Vertex> vertices) {
+		FloatBuffer buffer = BufferUtils.createFloatBuffer(vertices.size() * VERTEX_SIZE);
+		for (Vertex v : vertices) {
+			buffer.put(v.position.x);
+			buffer.put(v.position.y);
+			
+			buffer.put(v.color.r / 255f);
+			buffer.put(v.color.g / 255f);
+			buffer.put(v.color.b / 255f);
+			buffer.put(v.color.a / 255f);
+			
+			buffer.put(v.uv.u);
+			buffer.put(v.uv.v);
+		}
+		buffer.flip();
+		
+		return buffer;
+	}
+	
+	public static IntBuffer createIndexBuffer(int numGlyphs) {
+		IntBuffer buffer = BufferUtils.createIntBuffer(numGlyphs * 6);
+		for (int i = 0; i < numGlyphs; i++) {
+			buffer.put(i * 4 + 0);
+			buffer.put(i * 4 + 1);
+			buffer.put(i * 4 + 2);
+			buffer.put(i * 4 + 2);
+			buffer.put(i * 4 + 3);
+			buffer.put(i * 4 + 0);
+		}
+		buffer.flip();
+		
+		return buffer;
 	}
 }

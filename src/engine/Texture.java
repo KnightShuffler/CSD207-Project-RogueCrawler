@@ -67,6 +67,10 @@ public class Texture {
 		super.finalize();
 	}
 	
+	public int getTexture() {
+		return id;
+	}
+	
 	public void bind() {
 		glBindTexture(GL_TEXTURE_2D, id);
 	}
@@ -76,6 +80,13 @@ public class Texture {
 			//change the active texture, sampler goes from 0-31 and so we'll get the required sampler
 			glActiveTexture(GL_TEXTURE0 + sampler);
 			glBindTexture(GL_TEXTURE_2D, id);
+		}
+	}
+	
+	public static void bind(int sampler, int texture) {
+		if (sampler >= 0 && sampler <= 31) {
+			glActiveTexture(GL_TEXTURE0 + sampler);
+			glBindTexture(GL_TEXTURE_2D, texture);
 		}
 	}
 }
