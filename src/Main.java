@@ -27,6 +27,10 @@ public class Main {
 				
 		InputManager.init();
 		InputManager.addKey(GLFW_KEY_ESCAPE);
+		InputManager.addKey(GLFW_KEY_W);
+		InputManager.addKey(GLFW_KEY_A);
+		InputManager.addKey(GLFW_KEY_S);
+		InputManager.addKey(GLFW_KEY_D);
 		
 		Window window = new Window();
 		try {
@@ -104,6 +108,23 @@ public class Main {
 			if (window.getInputManager().isReleased(GLFW_KEY_ESCAPE)) {
 				window.close();
 			}
+			
+			if(window.getInputManager().isReleased(GLFW_KEY_W)){
+				camera.getPosition().sub(new Vector3f(0,5,0));
+			}
+			
+            if(window.getInputManager().isReleased(GLFW_KEY_A)){
+            	camera.getPosition().sub(new Vector3f(-5,0,0));
+			}
+            
+            if(window.getInputManager().isReleased(GLFW_KEY_S)){
+            	camera.getPosition().sub(new Vector3f(0,-5,0));
+			} 
+            
+            if(window.getInputManager().isReleased(GLFW_KEY_D)){
+            	camera.getPosition().sub(new Vector3f(5,0,0));
+			}
+
 			window.updateInput();
 			glClearDepth(1.0);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
