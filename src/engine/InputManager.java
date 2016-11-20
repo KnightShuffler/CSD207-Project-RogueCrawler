@@ -30,7 +30,7 @@ public class InputManager {
 	
 	public void takeInput(long windowHandle) {
 		for (Integer key : keySet) {
-			keyMap.put(key, glfwGetKey(windowHandle, key) == GL_TRUE ? true : false);
+			keyMap.put(key, glfwGetKey(windowHandle, key) == 1);
 		}
 	}
 	

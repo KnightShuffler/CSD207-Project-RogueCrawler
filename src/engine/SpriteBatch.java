@@ -129,9 +129,9 @@ public class SpriteBatch {
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, Vertex.createBuffer(offset), GL_DYNAMIC_DRAW);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 		
-		for (RenderBatch r : renderBatches) {
+		/*for (RenderBatch r : renderBatches) {
 			System.out.print(r.getTexture() + " ");
 		}
-		System.out.println();
+		System.out.println();*/
 	}
 }
