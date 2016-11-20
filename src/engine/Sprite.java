@@ -107,6 +107,12 @@ public class Sprite {
 		glBindVertexArray(0);
 	}
 	
+	public void drawOffset(int n, int o) {
+		glBindVertexArray(vaoID);
+		glDrawElements(GL_TRIANGLES, n, GL_UNSIGNED_INT, o << 2);
+		glBindVertexArray(0);
+	}
+	
 	private FloatBuffer createBuffer(float[] data) {
 		FloatBuffer buffer = BufferUtils.createFloatBuffer(data.length);
 		buffer.put(data);

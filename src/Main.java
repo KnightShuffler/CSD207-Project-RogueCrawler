@@ -5,6 +5,7 @@ import org.joml.Vector4f;
 import org.lwjgl.opengl.GL;
 
 import engine.ColorRGBA8;
+import engine.Glyph;
 import engine.InputManager;
 import engine.ShaderProgram;
 import engine.Sprite;
@@ -54,48 +55,56 @@ public class Main {
 			0f, 1f,
 			1f, 1f, 1f, 1f,
 			0f, 1f,
+			
+			//Second set
+			-1f, -1f,
+			1f, 0f, 0f, 1f,
+			0f, 0f,
+				
+			0f, -1f,
+			0f, 1f, 0f, 1f,
+			1f, 0f,
+				
+			0f, 0f,
+			0f, 0f, 1f, 1f,
+			1f, 1f,
+				
+			-1f, 0f,
+			1f, 1f, 1f, 1f,
+			0f, 1f,
 		};
-		
-		float[] vertexData2 = {
-				-1f, -1f,
-				1f, 0f, 0f, 1f,
-				0f, 0f,
-				
-				0f, -1f,
-				0f, 1f, 0f, 1f,
-				1f, 0f,
-				
-				0f, 0f,
-				0f, 0f, 1f, 1f,
-				1f, 1f,
-				
-				-1f, 0f,
-				1f, 1f, 1f, 1f,
-				0f, 1f,
-			};
 		
 		int[] indices = {
 			0, 1, 2,
 			2, 3, 0,
+			
+			4, 5, 6,
+			6, 7, 4,
 		};
 		
 		Sprite sprite1 = new Sprite(vertexData1, indices, 0);
-		Sprite sprite2 = new Sprite(vertexData2, indices, 0);
+//		Sprite sprite2 = new Sprite(vertexData2, indices, 0);
 		
 		Texture texture1 = new Texture("./textures/kumiko legs.jpg");
 		Texture texture2 = new Texture("./textures/1.png");
 		
 		ShaderProgram shader = new ShaderProgram("./shaders/vertexShader.vs", "./shaders/fragmentShader.fs");
 		
-		SpriteBatch spriteBatch = new SpriteBatch();
-		spriteBatch.init();
+		SpriteBatch spB = new SpriteBatch();
 		
-		Vector4f destRect1 = new Vector4f(-1f, 0f, 1f, 1f);
-		Vector4f destRect2 = new Vector4f(0f, -1f, 1f, 1f);
+		Vector4f destRect1 = new Vector4f(-1f, -1f, 1f, 1f);
+		Vector4f destRect2 = new Vector4f(-1f, 0f, 1f, 1f);
+		Vector4f destRect3 = new Vector4f(0f, 0f, 1f, 1f);
+		
 		Vector4f uvRect = new Vector4f(0f, 0f, 1f, 1f);
-		ColorRGBA8 color = new ColorRGBA8((byte)255, (byte)255, (byte)255, (byte)255);
 		
-		float t = 0f;
+		ColorRGBA8 white = new ColorRGBA8((byte)255, (byte)255, (byte)255, (byte)255);
+		
+		Glyph g1 = new Glyph(destRect1, uvRect, white, texture1.getTexture(), 1f);
+		Glyph g2 = new Glyph(destRect2, uvRect, white, texture2.getTexture(), .5f);
+		Glyph g3 = new Glyph(destRect3, uvRect, white, texture1.getTexture(), .75f);
+		
+//		float t = 0f;
 		
 		while (!window.shouldClose()) {
 			//Frame Processing
@@ -111,30 +120,23 @@ public class Main {
 			
 			shader.bind();
 			shader.setUniform("mySampler", 0);
-			shader.setUniform("time", t);
-			texture1.bind(0);
-			sprite1.drawVertexArray();
-			texture2.bind(0);
-			sprite2.drawVertexArray();
-//			shader.unbind()
-			
-//			shader.bind();
-//			shader.setUniform("mySampler", 0);
 //			shader.setUniform("time", t);
+//			texture1.bind(0);
+//			sprite1.drawVertexArray();
 			
-			spriteBatch.begin();
-			spriteBatch.addGlyph(destRect1, color, uvRect, texture1.getTexture());
-			spriteBatch.addGlyph(destRect2, color, uvRect, texture2.getTexture());
-			spriteBatch.end();
+			spB.begin(SpriteBatch.SORT_BY_TEXTURE);
+			spB.addGlyph(g1);
+			spB.addGlyph(g2);
+			spB.addGlyph(g3);
+			spB.end();
 			
-			spriteBatch.renderBatches();
+			spB.render();
 			
 			shader.unbind();
 			
 			window.swapBuffers();
 			
-			t+=0.001f;
+//			t+=0.1f;
 		}
 	}
-
 }
