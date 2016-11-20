@@ -75,8 +75,8 @@ public class Main {
 			2, 3, 0,
 		};
 		
-		Sprite sprite1 = new Sprite(vertexData1, indices);
-		Sprite sprite2 = new Sprite(vertexData2, indices);
+		Sprite sprite1 = new Sprite(vertexData1, indices, 0);
+		Sprite sprite2 = new Sprite(vertexData2, indices, 0);
 		
 		Texture texture1 = new Texture("./textures/kumiko legs.jpg");
 		Texture texture2 = new Texture("./textures/1.png");
@@ -97,13 +97,13 @@ public class Main {
 			shader.setUniform("mySampler", 0);
 			shader.setUniform("time", t);
 			texture1.bind(0);
-			sprite1.drawShader();
+			sprite1.drawVertexArray();
 			texture2.bind(0);
-			sprite2.drawShader();
+			sprite2.drawVertexArray();
 			
 			window.swapBuffers();
 			
-			t+=0.01f;
+			t+=0.1f;
 		}
 	}
 

@@ -12,6 +12,7 @@ import org.lwjgl.BufferUtils;
 
 public class Sprite {
 	private int drawCount;
+	private int vaoID = 0;
 	private int vboID = 0;
 	private int indexID = 0;
 	
@@ -26,6 +27,36 @@ public class Sprite {
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexID);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, createBuffer(indices), GL_STATIC_DRAW);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	}
+	
+	//Constructor to test if VAOs work
+	public Sprite(float[] vertexData, int[] indices, int v) {
+		drawCount = indices.length;
+		vboID = glGenBuffers();
+		glBindBuffer(GL_ARRAY_BUFFER, vboID);
+		glBufferData(GL_ARRAY_BUFFER, createBuffer(vertexData), GL_STATIC_DRAW);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		
+		indexID = glGenBuffers();
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexID);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, createBuffer(indices), GL_STATIC_DRAW);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+		
+		vaoID = glGenVertexArrays();
+		glBindVertexArray(vaoID);
+		glBindBuffer(GL_ARRAY_BUFFER, vboID);
+		
+		glEnableVertexAttribArray(0);
+		glEnableVertexAttribArray(1);
+		glEnableVertexAttribArray(2);
+		
+		glVertexAttribPointer(0, 2, GL_FLOAT, false, 8 << 2, 0 << 2);
+		glVertexAttribPointer(1, 4, GL_FLOAT, false, 8 << 2, 2 << 2);
+		glVertexAttribPointer(2, 2, GL_FLOAT, false, 8 << 2, 6 << 2);
+		
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexID);
+		
+		glBindVertexArray(0);
 	}
 	
 	public void draw() {
@@ -68,6 +99,12 @@ public class Sprite {
 		glDisableVertexAttribArray(0);
 		glDisableVertexAttribArray(1);
 		glDisableVertexAttribArray(2);
+	}
+	
+	public void drawVertexArray() {
+		glBindVertexArray(vaoID);
+		glDrawElements(GL_TRIANGLES, drawCount, GL_UNSIGNED_INT, 0);
+		glBindVertexArray(0);
 	}
 	
 	private FloatBuffer createBuffer(float[] data) {
