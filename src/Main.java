@@ -1,7 +1,11 @@
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
+
+import org.joml.Matrix4f;
+import org.joml.Vector3f;
 import org.lwjgl.opengl.GL;
 
+import engine.Camera;
 import engine.InputManager;
 import engine.ShaderProgram;
 import engine.Sprite;
@@ -20,7 +24,7 @@ public class Main {
 		} catch (IllegalStateException e) {
 			e.printStackTrace();
 		}
-		
+				
 		InputManager.init();
 		InputManager.addKey(GLFW_KEY_ESCAPE);
 		
@@ -31,6 +35,7 @@ public class Main {
 			e.printStackTrace();
 		}
 		
+		Camera camera = new Camera(640,480);
 		GL.createCapabilities();
 		glEnable(GL_TEXTURE_2D);
 		
@@ -78,14 +83,23 @@ public class Main {
 		Sprite sprite1 = new Sprite(vertexData1, indices);
 		Sprite sprite2 = new Sprite(vertexData2, indices);
 		
-		Texture texture1 = new Texture("./textures/kumiko legs.jpg");
+		Texture texture1 = new Texture("./textures/deadmau5.jpg");
 		Texture texture2 = new Texture("./textures/1.png");
 		
 		ShaderProgram shader = new ShaderProgram("./shaders/vertexShader.vs", "./shaders/fragmentShader.fs");
 		
+		
+		
+		Matrix4f scale = new Matrix4f().translate(new Vector3f(100,0,0)).scale(300);
+		
+		Matrix4f target = new Matrix4f();
+			
+	
 		float t = 0f;
+		camera.setPosition(new Vector3f(-100,0,0));
 		
 		while (!window.shouldClose()) {
+			target=scale;
 			window.takeInput();
 			if (window.getInputManager().isReleased(GLFW_KEY_ESCAPE)) {
 				window.close();
@@ -96,6 +110,7 @@ public class Main {
 			shader.bind();
 			shader.setUniform("mySampler", 0);
 			shader.setUniform("time", t);
+			shader.setUniform("projection", camera.getProjection().mul(target));
 			texture1.bind(0);
 			sprite1.drawShader();
 			texture2.bind(0);

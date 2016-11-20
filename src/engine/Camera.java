@@ -23,7 +23,7 @@ public class Camera {
 			return position;
 		}
 		
-		public Matrix4f projection(){
+		public Matrix4f getProjection(){
 			Matrix4f target = new Matrix4f();
 			Matrix4f pos = new Matrix4f().setTranslation(position);
 			
