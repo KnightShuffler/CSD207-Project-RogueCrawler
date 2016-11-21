@@ -46,6 +46,12 @@ public class Main {
 		}
 
 		GL.createCapabilities();
+		
+		System.out.println(glGetString(GL_VERSION));
+		
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		
 		glEnable(GL_TEXTURE_2D);
 
 		float[] vertexData1 = { 0f, 0f, 1f, 0f, 0f, 1f, 0f, 0f,
@@ -149,11 +155,11 @@ public class Main {
 			// sprite1.drawVertexArray();
 
 			spB.begin(SpriteBatch.SORT_BY_TEXTURE);
-			for (int i = 0; i < 1000; i++) {
+			
 			spB.addGlyph(g1);
 			spB.addGlyph(g2);
 			spB.addGlyph(g3);
-			}
+			
 			spB.end();
 
 			spB.render();
