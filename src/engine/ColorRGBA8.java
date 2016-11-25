@@ -22,4 +22,13 @@ public class ColorRGBA8 {
 		this.b = (byte)c.z;
 		this.a = (byte)c.w;
 	}
+	
+	public static final ColorRGBA8 WHITE	=	new ColorRGBA8((byte)255, (byte)255, (byte)255, (byte)255);
+	public static final ColorRGBA8 RED 		=	new ColorRGBA8((byte)255, (byte)0, (byte)0, (byte)255);
+	public static final ColorRGBA8 BLUE		=	new ColorRGBA8((byte)0, (byte)255, (byte)0, (byte)255);
+	public static final ColorRGBA8 GREEN	=	new ColorRGBA8((byte)0, (byte)0, (byte)255, (byte)255);
+	public static final ColorRGBA8 YELLOW	=	new ColorRGBA8((byte)255, (byte)255, (byte)0, (byte)255);
+	public static final ColorRGBA8 MAGENTA	=	new ColorRGBA8((byte)255, (byte)0, (byte)255, (byte)255);
+	public final static ColorRGBA8 CYAN 	=	new ColorRGBA8((byte)0, (byte)255, (byte)255, (byte)255);
+	public final static ColorRGBA8 BLACK 	=	new ColorRGBA8((byte)0, (byte)0, (byte)0, (byte)255);
 }
