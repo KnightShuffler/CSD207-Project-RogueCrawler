@@ -14,7 +14,10 @@ import engine.ShaderProgram;
 import engine.Sprite;
 import engine.SpriteBatch;
 import engine.Texture;
+import engine.Timer;
 import engine.Window;
+import world.Tile;
+import world.TileRenderer;
 
 public class Main {
 
@@ -72,7 +75,7 @@ public class Main {
 		Sprite sprite1 = new Sprite(vertexData1, indices, 0);
 		// Sprite sprite2 = new Sprite(vertexData2, indices, 0);
 
-		Texture texture1 = new Texture("./textures/kumiko legs.jpg");
+		Texture texture1 = new Texture("./textures/deadmau5.jpg");
 		Texture texture2 = new Texture("./textures/1.png");
 
 		Camera camera = new Camera(window.getWidth(), window.getHeight());
@@ -100,43 +103,58 @@ public class Main {
 		Glyph g3 = new Glyph(destRect3, uvRect, white, texture1.getTexture(), .75f);
 
 		// float t = 0f;
-
+         Timer time = new Timer();
+		
 		while (!window.shouldClose()) {
-			target = scale;
-			// Frame Processing
-			window.takeInput();
-			if (window.getInputManager().isReleased(GLFW_KEY_ESCAPE)) {
-				window.close();
+			
+			time.beginFrame();
+			
+                while(time.shouldRender()) {
+                	
+                	// Frame Processing
+                	target = scale;
+                	window.takeInput();
+        			if (window.getInputManager().isReleased(GLFW_KEY_ESCAPE)) {
+        				window.close();
+        			}
+
+        			if (window.getInputManager().isDown(GLFW_KEY_W)) {
+        				camera.getPosition().sub(new Vector3f(0, 5, 0));
+        			}
+
+        			if (window.getInputManager().isDown(GLFW_KEY_A)) {
+        				camera.getPosition().sub(new Vector3f(-5, 0, 0));
+        			}
+
+        			if (window.getInputManager().isDown(GLFW_KEY_S)) {
+        				camera.getPosition().sub(new Vector3f(0, -5, 0));
+        			}
+
+        			if (window.getInputManager().isDown(GLFW_KEY_D)) {
+        				camera.getPosition().sub(new Vector3f(5, 0, 0));
+        			}
+
+        			if (window.getInputManager().isDown(GLFW_KEY_Q)) {
+        				camScale += .1f;
+        				camera.setScale(camScale);
+        			}
+
+        			if (window.getInputManager().isDown(GLFW_KEY_E)) {
+        				camScale -= .1f;
+        				camera.setScale(camScale);
+        			}
+
+        			window.updateInput();
+				
+				if(time.frame_time >= 1.0) {
+					time.frame_time = 0;
+					System.out.println("FPS: " + time.frames);
+					time.frames = 0;
+				}
 			}
 
-			if (window.getInputManager().isDown(GLFW_KEY_W)) {
-				camera.getPosition().sub(new Vector3f(0, 5, 0));
-			}
-
-			if (window.getInputManager().isDown(GLFW_KEY_A)) {
-				camera.getPosition().sub(new Vector3f(-5, 0, 0));
-			}
-
-			if (window.getInputManager().isDown(GLFW_KEY_S)) {
-				camera.getPosition().sub(new Vector3f(0, -5, 0));
-			}
-
-			if (window.getInputManager().isDown(GLFW_KEY_D)) {
-				camera.getPosition().sub(new Vector3f(5, 0, 0));
-			}
-
-			if (window.getInputManager().isDown(GLFW_KEY_Q)) {
-				camScale += .1f;
-				camera.setScale(camScale);
-			}
-
-			if (window.getInputManager().isDown(GLFW_KEY_E)) {
-				camScale -= .1f;
-				camera.setScale(camScale);
-			}
-
-			window.updateInput();
-
+			
+			if(time.shouldRender) {
 			// Rendering
 			glClearDepth(1.0);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -149,19 +167,20 @@ public class Main {
 			// sprite1.drawVertexArray();
 
 			spB.begin(SpriteBatch.SORT_BY_TEXTURE);
-			for (int i = 0; i < 1000; i++) {
+//			for (int i = 0; i < 1000; i++) {
 			spB.addGlyph(g1);
 			spB.addGlyph(g2);
 			spB.addGlyph(g3);
-			}
+//			}
 			spB.end();
-
+            
 			spB.render();
 
 			shader.unbind();
 
 			window.swapBuffers();
-
+			time.frames++;
+			}
 			// t+=0.1f;
 		}
 	}
