@@ -2,7 +2,6 @@ package engine;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
-import java.util.ArrayList;
 
 import org.lwjgl.BufferUtils;
 
@@ -24,7 +23,7 @@ public class Vertex {
 		uv = new UV();
 	}
 	
-	public Vertex(float x, float y, byte r, byte g, byte b, byte a, float u, float v) {
+	public Vertex(float x, float y, int r, int g, int b, int a, float u, float v) {
 		position = new Position(x, y);
 		color = new ColorRGBA8(r, g, b, a);
 		uv = new UV(u, v);
@@ -35,7 +34,7 @@ public class Vertex {
 		position.y = y;
 	}
 	
-	void setColor(byte r, byte g, byte b, byte a) {
+	void setColor(int r, int g, int b, int a) {
 		color.r = r;
 		color.g = g;
 		color.g = b;
@@ -53,10 +52,10 @@ public class Vertex {
 			buffer.put(data[i].position.x);
 			buffer.put(data[i].position.y);
 			
-			buffer.put(data[i].color.r / 255f);
-			buffer.put(data[i].color.g / 255f);
-			buffer.put(data[i].color.b / 255f);
-			buffer.put(data[i].color.a / 255f);
+			buffer.put((float)data[i].color.r / 255f);
+			buffer.put((float)data[i].color.g / 255f);
+			buffer.put((float)data[i].color.b / 255f);
+			buffer.put((float)data[i].color.a / 255f);
 			
 			buffer.put(data[i].uv.u);
 			buffer.put(data[i].uv.v);
