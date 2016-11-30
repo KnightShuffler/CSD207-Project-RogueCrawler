@@ -11,8 +11,8 @@ public class App extends MainGame {
 	GameScreen test;
 
 	public App() {
+		super(60.0);
 		windowTitle = "Rogue Crawler";
-//		super();
 	}
 
 	@Override

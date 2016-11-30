@@ -19,16 +19,18 @@ public abstract class MainGame {
 	protected boolean isRunning = false;
 
 	// The target FPS for the game
-	protected float targetFPS;
+	protected double targetFPS;
 	// The actual FPS
-	protected float FPS;
+	protected double FPS;
 
 	// The window for the game to run in
 	protected Window window;
 	protected String windowTitle;
 
-	public MainGame() {
-		// Empty
+	protected Timer timer;
+
+	public MainGame(double targetFPS) {
+		this.targetFPS = targetFPS;
 	}
 
 	// Initialize the game and return if everything initialized properly
@@ -46,6 +48,8 @@ public abstract class MainGame {
 
 		// Set the glfw callbacks
 		Window.setCallBacks();
+
+		timer = new Timer(targetFPS);
 
 		// Initialize glfw
 		try {
@@ -104,38 +108,47 @@ public abstract class MainGame {
 
 		// While the game is running
 		while (isRunning) {
-			//Take input
-			window.takeInput();
-			// Update the current screen
-			update();
-			// Update the input in the input manager
-			window.updateInput();
-			// Draw to the screen
-			draw();
-			// Swap the buffers
-			window.swapBuffers();
-			
+			timer.beginFrame();
+
+			while (timer.shouldProcess()) {
+				// Take input
+				window.takeInput();
+				// Update the current screen
+				update();
+				// Update the input in the input manager
+				window.updateInput();
+
+				timer.displayFrameRate();
+			}
+
+			if (timer.shouldRender()) {
+				// Draw to the screen
+				draw();
+				// Swap the buffers
+				window.swapBuffers();
+			}
+
 			if (window.shouldClose()) {
 				break;
 			}
 		}
-		
+
 		exitGame();
 	}
 
 	// Exit the game (cleanup)
 	public void exitGame() {
-		//Exit function for the current screen
+		// Exit function for the current screen
 		currentScreen.onExit();
-		//clean up the screen list
+		// clean up the screen list
 		screenList.destroy();
-		//custom exit code
+		// custom exit code
 		onExit();
-		//set the running flag to false
+		// set the running flag to false
 		isRunning = false;
 	}
 
-	//Update the game
+	// Update the game
 	protected void update() {
 		if (currentScreen != null) {
 			switch (currentScreen.getScreenState()) {
@@ -175,10 +188,6 @@ public abstract class MainGame {
 		if (currentScreen != null && currentScreen.getScreenState() == GameScreen.ScreenState.RUNNING) {
 			currentScreen.draw();
 		}
-	}
-
-	public float getFPS() {
-		return FPS;
 	}
 
 	// Which keys to initialize
