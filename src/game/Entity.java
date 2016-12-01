@@ -22,8 +22,8 @@ class Health {
 	
 	public int getCurrentHealth() { return current; }
 	
-	public void addMaxHealth() { max += 1; }
-	public void reduceMaxHealth() { max -= 1; }
+	public void addMaxHealth(int inc) { max += inc; }                   //Added inc argument @Kranthi
+	public void reduceMaxHealth(int dec) { max -= dec; }                //Added dec argument @Kranthi
 	
 	public void addHealth(int h) { current = (current + h) > max ? max : current + h; }
 	public void reduceHealth(int h) { current = (current - h) < 0 ? 0 : current - h; }
@@ -45,16 +45,20 @@ public abstract class Entity {
 	//The damage the entity does by shots (and by contact in the case of enemies) 
 	protected int damage;
 	
+	protected boolean canShoot;
+	
 	//The handle to the texture of the entity
 	private int texture = 0;
 	//The color to multiply the texture color by
 	private ColorRGBA8 color = ColorRGBA8.WHITE;
 	
 	public Entity(int h, float x, float y, int width, int height, float speed, float shotSpeed, float fireRate,
-			int damage, int texture, ColorRGBA8 color) {
-		health = new Health(h);
-		position = new Vector2f(x, y);
-		dimensions = new Vector2i(width, height);
+			int damage, int texture, ColorRGBA8 color,boolean canshoot) {
+		this.health = new Health(h);
+		this.position = new Vector2f(x, y);
+		this.dimensions = new Vector2i(width, height);
+		
+		this.canShoot = canshoot;
 		
 		this.speed = speed;
 		this.shotSpeed = shotSpeed;
@@ -79,6 +83,13 @@ public abstract class Entity {
 	public void collision(ArrayList<String> roomData) {
 		
 	}
+	
+	
+	public void shoot(float angle){
+		
+	}
+	
+	
 	
 	//getters
 	final public int getMaxHealth() { return health.getMaxHealth(); }
