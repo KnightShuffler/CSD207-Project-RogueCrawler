@@ -13,11 +13,11 @@ import engine.UV;
 class Health {
 	private int max;
 	private int current;
-	
+
 	public Health(int m) {
 		max = current = m;
 	}
-	
+
 	public int getMaxHealth() { return max; }
 	
 	public int getCurrentHealth() { return current; }
@@ -30,57 +30,56 @@ class Health {
 }
 
 public abstract class Entity {
-	//Holds the health of the entity
+	// Holds the health of the entity
 	protected Health health;
-	//Holds the x and y position of the entity (as floats) (in room coordinates)
+	// Holds the x and y position of the entity (as floats) (in room
+	// coordinates)
 	protected Vector2f position;
-	//Holds the width and height of the entity (as integers)
+	// Holds the width and height of the entity (as integers)
 	protected Vector2i dimensions;
-	//Speed of the entity in pixels per second
+	// Speed of the entity in pixels per second
 	protected float speed;
-	//Speed of the shots that the entity fires (if any) in pixels per second 
+	// Speed of the shots that the entity fires (if any) in pixels per second
 	protected float shotSpeed;
-	//The rate at which the entity shoots its shots (if any) in shots per second
+	// The rate at which the entity shoots its shots (if any) in shots per
+	// second
 	protected float fireRate;
-	//The damage the entity does by shots (and by contact in the case of enemies) 
+	// The damage the entity does by shots (and by contact in the case of
+	// enemies)
 	protected int damage;
-	
-	//The handle to the texture of the entity
+
+	// The handle to the texture of the entity
 	private int texture = 0;
-	//The color to multiply the texture color by
+	// The color to multiply the texture color by
 	private ColorRGBA8 color = ColorRGBA8.WHITE;
-	
+
 	public Entity(int h, float x, float y, int width, int height, float speed, float shotSpeed, float fireRate,
 			int damage, int texture, ColorRGBA8 color) {
 		health = new Health(h);
 		position = new Vector2f(x, y);
 		dimensions = new Vector2i(width, height);
-		
+
 		this.speed = speed;
 		this.shotSpeed = shotSpeed;
 		this.fireRate = fireRate;
 		this.damage = damage;
-		
+
 		this.texture = texture;
 		this.color = color;
 	}
-	
-	//Default draw function for agents note that the depth is t
+
+	// Default draw function for agents note that the depth is t
 	public void draw(SpriteBatch spb) {
-		spb.addGlyph(
-				new Vector4f(position.x, position.y, (float)dimensions.x, (float)dimensions.y),
-				UV.DEFAULT_UV_RECT,
-				color,
-				texture,
-				position.y);
+		spb.addGlyph(new Vector4f(position.x, position.y, (float) dimensions.x, (float) dimensions.y),
+				UV.DEFAULT_UV_RECT, color, texture, position.y);
 	}
-	
-	//Place holder for collision functions
+
+	// Place holder for collision functions
 	public void collision(ArrayList<String> roomData) {
-		
+
 	}
-	
-	//getters
+
+	// getters
 	final public int getMaxHealth() { return health.getMaxHealth(); }
 	final public int getCurrentHealth() { return health.getCurrentHealth(); }
 	final public Vector2f getPosition() { return position; }

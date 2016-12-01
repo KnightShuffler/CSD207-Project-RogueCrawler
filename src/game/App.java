@@ -8,7 +8,7 @@ import engine.MainGame;
 import engine.SoundManager;
 
 public class App extends MainGame {
-	
+
 	GameScreen test;
 
 	public App() {
@@ -34,7 +34,7 @@ public class App extends MainGame {
 		// TODO Auto-generated method stub
 
 	}
-	
+
 	@Override
 	public void addKeys() {
 		// TODO Auto-generated method stub
@@ -46,10 +46,10 @@ public class App extends MainGame {
 		InputManager.addKey(GLFW_KEY_Q);
 		InputManager.addKey(GLFW_KEY_E);
 	}
-	
+
 	public static void main(String[] args) {
 		App a = new App();
-		
+
 		a.run();
 	}
 
