@@ -20,5 +20,17 @@
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="CSD207-Project-RogueCrawler/lib/natives"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="lib/jars/lwjgl-openal.jar" sourcepath="lib/source/lwjgl-openal-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/CSD207-Project-RogueCrawler/lib/docs/lwjgl-openal-javadoc.jar!/"/>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="CSD207-Project-RogueCrawler/lib/natives"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/jars/lwjgl-stb.jar" sourcepath="lib/source/lwjgl-stb-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/CSD207-Project-RogueCrawler/lib/docs/lwjgl-stb-javadoc.jar!/"/>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="CSD207-Project-RogueCrawler/lib/natives"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

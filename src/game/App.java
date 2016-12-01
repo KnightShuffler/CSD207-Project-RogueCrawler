@@ -5,6 +5,7 @@ import static org.lwjgl.glfw.GLFW.*;
 import engine.GameScreen;
 import engine.InputManager;
 import engine.MainGame;
+import engine.SoundManager;
 
 public class App extends MainGame {
 	
@@ -23,7 +24,7 @@ public class App extends MainGame {
 	@Override
 	public void addScreens() {
 		// TODO Auto-generated method stub
-		test = new TestScreen(window);
+		test = new TestScreen(window, soundManager);
 		screenList.addScreen(test);
 		screenList.setScreen(test.getScreenIndex());
 	}

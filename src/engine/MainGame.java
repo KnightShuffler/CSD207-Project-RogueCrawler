@@ -3,6 +3,14 @@ package engine;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 
+import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
+
+import static org.lwjgl.openal.ALC10.*;
+
+import org.lwjgl.openal.AL;
+import org.lwjgl.openal.ALC;
+import org.lwjgl.openal.ALCCapabilities;
 import org.lwjgl.opengl.GL;
 
 /*
@@ -28,6 +36,8 @@ public abstract class MainGame {
 	protected String windowTitle;
 
 	protected Timer timer;
+
+	protected SoundManager soundManager;
 
 	public MainGame(double targetFPS) {
 		this.targetFPS = targetFPS;
@@ -74,6 +84,14 @@ public abstract class MainGame {
 		// Enable texturing
 		glEnable(GL_TEXTURE_2D);
 
+		soundManager = new SoundManager();
+		try {
+			soundManager.init();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		// Custom initialization code
 		onInit();
 
@@ -118,7 +136,7 @@ public abstract class MainGame {
 				// Update the input in the input manager
 				window.updateInput();
 
-				timer.displayFrameRate();
+				// timer.displayFrameRate();
 			}
 
 			if (timer.shouldRender()) {
@@ -140,6 +158,8 @@ public abstract class MainGame {
 	public void exitGame() {
 		// Exit function for the current screen
 		currentScreen.onExit();
+		// Delete the sound manager
+		soundManager.destroy();
 		// clean up the screen list
 		screenList.destroy();
 		// custom exit code

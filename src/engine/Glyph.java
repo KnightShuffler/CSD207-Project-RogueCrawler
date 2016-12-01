@@ -15,43 +15,8 @@ public class Glyph {
 		
 		vertices = new Vertex[4];
 		
-		//Top Left
-		vertices[0] = new Vertex(
-				destRect.x,
-				destRect.y + destRect.w,
-				color.r,
-				color.g,
-				color.b,
-				color.a,
-				uvRect.x,
-				uvRect.y + uvRect.w
-				);
-		
-		//Top Right
-		vertices[1] = new Vertex(
-						destRect.x + destRect.z,
-						destRect.y + destRect.w,
-						color.r,
-						color.g,
-						color.b,
-						color.a,
-						uvRect.x + uvRect.z,
-						uvRect.y + uvRect.w
-						);
-		//Bottom Right
-		vertices[2] = new Vertex(
-						destRect.x + destRect.z,
-						destRect.y,
-						color.r,
-						color.g,
-						color.b,
-						color.a,
-						uvRect.x + uvRect.z,
-						uvRect.y
-						);
-		
 		//Bottom Left
-		vertices[3] = new Vertex(
+		vertices[0] = new Vertex(
 				destRect.x,
 				destRect.y,
 				color.r,
@@ -61,6 +26,41 @@ public class Glyph {
 				uvRect.x,
 				uvRect.y
 				);
+		
+		//Top Left
+		vertices[1] = new Vertex(
+				destRect.x,
+				destRect.y + destRect.w,
+				color.r,
+				color.g,
+				color.b,
+				color.a,
+				uvRect.x,
+				uvRect.w
+				);
+		
+		//Top Right
+		vertices[2] = new Vertex(
+						destRect.x + destRect.z,
+						destRect.y + destRect.w,
+						color.r,
+						color.g,
+						color.b,
+						color.a,
+						uvRect.z,
+						uvRect.w
+						);
+		//Bottom Right
+		vertices[3] = new Vertex(
+						destRect.x + destRect.z,
+						destRect.y,
+						color.r,
+						color.g,
+						color.b,
+						color.a,
+						uvRect.z,
+						uvRect.y
+						);
 	}
 	
 	public int getTexture() { return texture; }
@@ -110,5 +110,5 @@ class GlyphTextureComparator implements Comparator<Glyph> {
 	public int compare(Glyph g1, Glyph g2) {
 		return g1.getTexture() - g2.getTexture();
 	}
-	
+
 }
