@@ -24,14 +24,12 @@ public class Timer {
 
 	// Returns the system time in milliseconds
 	public static float getTime() {
-		 return (float) System.nanoTime() / NANOSECONDS_PER_SECOND;
-//		return (float) System.nanoTime() / (float) 1000000000L;
+		return (float) System.nanoTime() / NANOSECONDS_PER_SECOND;
 	}
 
 	public Timer(float target) {
 		targetFrameRate = target;
-//		 ideal frame time in ms
-		frameCap = 1 / targetFrameRate;
+		frameCap = 1f / targetFrameRate;
 	}
 
 	// Initializes the prevTicks variable to a start value (only called before
@@ -57,9 +55,6 @@ public class Timer {
 		prevTicks = newTicks;
 
 		totalDeltaTime = frameTime / frameCap;
-
-		// Debugging code to check if the time step works
-//		 totalDeltaTime = frameTime / (1f / 60f);
 	}
 
 	// Stores the end time of the frame and if the frame duration was less than
