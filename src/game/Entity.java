@@ -10,31 +10,16 @@ import engine.ColorRGBA8;
 import engine.SpriteBatch;
 import engine.UV;
 
-class Health {
-	private int max;
-	private int current;
-
-	public Health(int m) {
-		max = current = m;
-	}
-
-	public int getMaxHealth() { return max; }
-	
-	public int getCurrentHealth() { return current; }
-	
-	public void addMaxHealth() { max += 1; }
-	public void reduceMaxHealth() { max -= 1; }
-	
-	public void addHealth(int h) { current = (current + h) > max ? max : current + h; }
-	public void reduceHealth(int h) { current = (current - h) < 0 ? 0 : current - h; }
-}
-
 public abstract class Entity {
 	// Holds the health of the entity
 	protected Health health;
 	// Holds the x and y position of the entity (as floats) (in room
 	// coordinates)
 	protected Vector2f position;
+	// Holds the velocity of the entity
+	protected Vector2f velocity;
+	// Holds the angle of motion that the entity follows
+	protected float direction;
 	// Holds the width and height of the entity (as integers)
 	protected Vector2i dimensions;
 	// Speed of the entity in pixels per second
@@ -57,6 +42,7 @@ public abstract class Entity {
 			int damage, int texture, ColorRGBA8 color) {
 		health = new Health(h);
 		position = new Vector2f(x, y);
+		velocity = new Vector2f(0f, 0f);
 		dimensions = new Vector2i(width, height);
 
 		this.speed = speed;
@@ -68,10 +54,15 @@ public abstract class Entity {
 		this.color = color;
 	}
 
-	// Default draw function for agents note that the depth is t
+	// Default draw function for entities
+	// their depth is their y position
 	public void draw(SpriteBatch spb) {
-		spb.addGlyph(new Vector4f(position.x, position.y, (float) dimensions.x, (float) dimensions.y),
+		spb.addGlyph(new Vector4f(position.x, position.y, (float)dimensions.x, (float)dimensions.y),
 				UV.DEFAULT_UV_RECT, color, texture, position.y);
+	}
+	
+	public void move(float deltaTime) {
+		position = position.add(velocity.mul(deltaTime));
 	}
 
 	// Place holder for collision functions
@@ -80,12 +71,35 @@ public abstract class Entity {
 	}
 
 	// getters
-	final public int getMaxHealth() { return health.getMaxHealth(); }
-	final public int getCurrentHealth() { return health.getCurrentHealth(); }
-	final public Vector2f getPosition() { return position; }
-	final public Vector2i getDimensions() { return dimensions; }
-	final public float getSpeed() { return speed; }
-	final public float getShotSpeed() { return shotSpeed; }
-	final public float getFireRate() { return fireRate; }
-	final public int damage() { return damage; }
+	final public int getMaxHealth() {
+		return health.getMaxHealth();
+	}
+
+	final public int getCurrentHealth() {
+		return health.getCurrentHealth();
+	}
+
+	final public Vector2f getPosition() {
+		return position;
+	}
+
+	final public Vector2i getDimensions() {
+		return dimensions;
+	}
+
+	final public float getSpeed() {
+		return speed;
+	}
+
+	final public float getShotSpeed() {
+		return shotSpeed;
+	}
+
+	final public float getFireRate() {
+		return fireRate;
+	}
+
+	final public int damage() {
+		return damage;
+	}
 }

@@ -37,7 +37,7 @@ public class InputManager {
 		return keyMap.get(key);
 	}
 
-	public boolean isUP(int key) {
+	public boolean isUp(int key) {
 		return !keyMap.get(key);
 	}
 

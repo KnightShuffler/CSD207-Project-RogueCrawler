@@ -6,25 +6,27 @@ import engine.GameScreen;
 import engine.InputManager;
 import engine.MainGame;
 import engine.SoundManager;
+import engine.Timer;
 
 public class App extends MainGame {
 
 	GameScreen test;
 
 	public App() {
-		super(60.0);
+		super(60.0f);
 		windowTitle = "Rogue Crawler";
 	}
 
 	@Override
 	public void onInit() {
 		// TODO Auto-generated method stub
+//		System.out.println(Timer.getTime());
 	}
 
 	@Override
 	public void addScreens() {
 		// TODO Auto-generated method stub
-		test = new TestScreen(window, soundManager);
+		test = new TestScreen(window, timer, soundManager);
 		screenList.addScreen(test);
 		screenList.setScreen(test.getScreenIndex());
 	}
@@ -32,7 +34,7 @@ public class App extends MainGame {
 	@Override
 	public void onExit() {
 		// TODO Auto-generated method stub
-
+//		System.out.println(Timer.getTime());
 	}
 
 	@Override
@@ -47,7 +49,7 @@ public class App extends MainGame {
 		InputManager.addKey(GLFW_KEY_E);
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
 		App a = new App();
 
 		a.run();

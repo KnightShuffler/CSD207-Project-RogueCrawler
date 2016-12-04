@@ -21,16 +21,18 @@ import engine.SoundSource;
 import engine.Sprite;
 import engine.SpriteBatch;
 import engine.Texture;
+import engine.Timer;
 import engine.UV;
 import engine.Window;
 
 public class TestScreen extends GameScreen {
 
-	public TestScreen(Window w, SoundManager soundMgr) {
+	public TestScreen(Window w, Timer timer, SoundManager soundMgr) {
 		this.window = w;
 		spriteBatch = new SpriteBatch();
 		shader = new ShaderProgram("./shaders/vertexShader.vs", "./shaders/fragmentShader.fs");
 		camera = new Camera(window.getWidth(), window.getHeight());
+		this.timer = timer;
 
 		this.soundMgr = soundMgr;
 
@@ -41,6 +43,7 @@ public class TestScreen extends GameScreen {
 	private SpriteBatch spriteBatch;
 	private ShaderProgram shader;
 	private Camera camera;
+	private Timer timer;
 
 	private Texture testTexture, testTexture2;
 
@@ -51,7 +54,7 @@ public class TestScreen extends GameScreen {
 			destRect3 = new Vector4f(1000f, 1000f, 10f, 10f), uvRect1 = new Vector4f(0.25f, 0.25f, 0.5f, 0.5f);
 	Glyph g1, g2, g3;
 
-	Sprite s1;
+	Player p;
 
 	@Override
 	public int getNextScreenIndex() {
@@ -76,28 +79,17 @@ public class TestScreen extends GameScreen {
 
 	@Override
 	public void onEntry() {
-		// TODO Auto-generated method stub
+		p = new Player(0f, 0f);
+
 		testTexture = new Texture("./textures/1.png");
 		testTexture2 = new Texture("./textures/2.png");
 		g1 = new Glyph(destRect1, uvRect1, ColorRGBA8.BLUE, testTexture.getTexture(), 1f);
 		g2 = new Glyph(destRect2, UV.DEFAULT_UV_RECT, ColorRGBA8.CYAN, testTexture2.getTexture(), 2f);
 		g3 = new Glyph(destRect3, UV.DEFAULT_UV_RECT, ColorRGBA8.CYAN, testTexture2.getTexture(), 1f);
 
-		float[] vData = { 20f, 20f, 1f, 1f, 1f, 1f, 0.25f, 0.25f,
-
-				20f, 80f, 1f, 1f, 1f, 1f, 0.25f, .5f,
-
-				80f, 80f, 1f, 1f, 1f, 1f, .5f, .5f,
-
-				80f, 20f, 1f, 1f, 1f, 1f, .5f, 0.25f, };
-
-		int[] iData = { 0, 1, 2, 2, 3, 0, };
-
-		s1 = new Sprite(vData, iData, 0);
-
 		try {
 			soundMgr.setListener(new SoundListener());
-			SoundBuffer buff = new SoundBuffer("./audio/saw.ogg");
+			SoundBuffer buff = new SoundBuffer("./audio/Title.ogg");
 			soundMgr.addSoundBuffer(buff);
 
 			SoundBuffer buff1 = new SoundBuffer("./audio/Confuse.ogg");
@@ -105,7 +97,7 @@ public class TestScreen extends GameScreen {
 
 			SoundSource testSource = new SoundSource(true, false);
 			testSource.setBuffer(buff.getBufferID());
-			testSource.setGain(0.001f);
+//			testSource.setGain(0.001f);
 			testSource.setPosition(new Vector3f(1000f, 1000f, 1f));
 
 			SoundSource testSource1 = new SoundSource(false, true);
@@ -119,7 +111,9 @@ public class TestScreen extends GameScreen {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		soundMgr.playSoundSource("test");
+//		soundMgr.playSoundSource("test");
+		
+		camera.setScale(1);
 	}
 
 	@Override
@@ -134,21 +128,22 @@ public class TestScreen extends GameScreen {
 		if (window.getInputManager().isReleased(GLFW_KEY_ESCAPE)) {
 			state = GameScreen.ScreenState.EXIT_APPLICATION;
 		}
-		if (window.getInputManager().isDown(GLFW_KEY_W)) {
-			camera.getPosition().sub(new Vector3f(0, 5, 0));
-		}
-
-		if (window.getInputManager().isDown(GLFW_KEY_A)) {
-			camera.getPosition().sub(new Vector3f(-5, 0, 0));
-		}
-
-		if (window.getInputManager().isDown(GLFW_KEY_S)) {
-			camera.getPosition().sub(new Vector3f(0, -5, 0));
-		}
-
-		if (window.getInputManager().isDown(GLFW_KEY_D)) {
-			camera.getPosition().sub(new Vector3f(5, 0, 0));
-		}
+//		
+//		if (window.getInputManager().isDown(GLFW_KEY_W)) {
+//			camera.getPosition().sub(new Vector3f(0, 5, 0));
+//		}
+//
+//		if (window.getInputManager().isDown(GLFW_KEY_A)) {
+//			camera.getPosition().sub(new Vector3f(-5, 0, 0));
+//		}
+//
+//		if (window.getInputManager().isDown(GLFW_KEY_S)) {
+//			camera.getPosition().sub(new Vector3f(0, -5, 0));
+//		}
+//
+//		if (window.getInputManager().isDown(GLFW_KEY_D)) {
+//			camera.getPosition().sub(new Vector3f(5, 0, 0));
+//		}
 
 		if (window.getInputManager().isPressed(GLFW_KEY_Q)) {
 			if (soundMgr.getSoundSource("test").isPlaying()) {
@@ -161,8 +156,24 @@ public class TestScreen extends GameScreen {
 		if (window.getInputManager().isPressed(GLFW_KEY_E)) {
 			soundMgr.playSoundSource("test1");
 		}
-
-		soundMgr.getListener().setPosition(camera.getPosition());
+		
+		p.processInput(window.getInputManager());
+		
+//		float totalDeltaTime = timer.fTime / timer.frameCap;
+		float totalDeltaTime = timer.getTotalDeltaTime();
+		int i = 0;
+		while (totalDeltaTime > 0.0f && i < 6) {
+			float deltaTime = Math.min(totalDeltaTime, 1.0f);
+			p.move(deltaTime);
+			camera.setPosition(new Vector3f(-p.getPosition().x, -p.getPosition().y, 0));
+			
+//			System.out.println("totalDeltaTime: " + totalDeltaTime);
+//			System.out.println("deltaTime: " + deltaTime);
+//			System.out.println("i: " + i);
+			
+			totalDeltaTime -= deltaTime;
+			i++;
+		}
 	}
 
 	@Override
@@ -179,12 +190,10 @@ public class TestScreen extends GameScreen {
 		spriteBatch.addGlyph(g1);
 		spriteBatch.addGlyph(g2);
 		spriteBatch.addGlyph(g3);
+		p.draw(spriteBatch);
 		spriteBatch.end();
 
 		spriteBatch.render();
-
-		Texture.bind(0, g1.getTexture());
-		s1.drawShader();
 
 		shader.unbind();
 	}

@@ -27,7 +27,7 @@ public abstract class MainGame {
 	protected boolean isRunning = false;
 
 	// The target FPS for the game
-	protected double targetFPS;
+	protected float targetFPS;
 	// The actual FPS
 	protected double FPS;
 
@@ -39,7 +39,7 @@ public abstract class MainGame {
 
 	protected SoundManager soundManager;
 
-	public MainGame(double targetFPS) {
+	public MainGame(float targetFPS) {
 		this.targetFPS = targetFPS;
 	}
 
@@ -109,7 +109,7 @@ public abstract class MainGame {
 	}
 
 	// Run the game
-	public void run() {
+	public void run() throws InterruptedException {
 		// Try to initialize the game, if it fails print the error log and
 		// return
 		try {
@@ -125,30 +125,36 @@ public abstract class MainGame {
 		isRunning = true;
 
 		// While the game is running
+		timer.init();
 		while (isRunning) {
-			timer.beginFrame();
+//			timer.beginFrame();
+			timer.startFrame();
 
-			while (timer.shouldProcess()) {
+			/*while (timer.shouldProcess()) {*/
 				// Take input
 				window.takeInput();
+				
+				timer.updateTimeStep();
+				
 				// Update the current screen
 				update();
 				// Update the input in the input manager
 				window.updateInput();
 
 				// timer.displayFrameRate();
-			}
+			/*}*/
 
-			if (timer.shouldRender()) {
+			/*if (timer.shouldRender()) {*/
 				// Draw to the screen
 				draw();
 				// Swap the buffers
 				window.swapBuffers();
-			}
+			/*}*/
 
 			if (window.shouldClose()) {
 				break;
 			}
+			timer.endFrame();
 		}
 
 		exitGame();
