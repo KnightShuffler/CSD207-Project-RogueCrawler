@@ -19,6 +19,9 @@ public class Timer {
 
 	// The ratio of the frame duration to the ideal frame duration (frameCap)
 	private float totalDeltaTime;
+	
+	final public static float MAX_DELTA_TIME = 1f;
+	final public static int MAX_FRAME_SIMULATIONS = 6;
 
 	final private static float NANOSECONDS_PER_SECOND = 1000000000L;
 

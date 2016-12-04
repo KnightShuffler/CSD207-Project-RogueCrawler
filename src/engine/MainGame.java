@@ -127,29 +127,28 @@ public abstract class MainGame {
 		// While the game is running
 		timer.init();
 		while (isRunning) {
-//			timer.beginFrame();
 			timer.startFrame();
 
-			/*while (timer.shouldProcess()) {*/
-				// Take input
-				window.takeInput();
-				
-				timer.updateTimeStep();
-				
-				// Update the current screen
-				update();
-				// Update the input in the input manager
-				window.updateInput();
+			// Take input
+			window.takeInput();
 
-				// timer.displayFrameRate();
-			/*}*/
+			timer.updateTimeStep();
 
-			/*if (timer.shouldRender()) {*/
-				// Draw to the screen
-				draw();
-				// Swap the buffers
-				window.swapBuffers();
-			/*}*/
+			// Update the current screen
+			update();
+			// Update the input in the input manager
+			window.updateInput();
+
+			// timer.displayFrameRate();
+
+			// Clear the rendering buffers
+			glClearDepth(1.0);
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			
+			// Draw to the screen
+			draw();
+			// Swap the buffers
+			window.swapBuffers();
 
 			if (window.shouldClose()) {
 				break;

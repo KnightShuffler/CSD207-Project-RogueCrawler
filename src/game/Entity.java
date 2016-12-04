@@ -38,9 +38,9 @@ public abstract class Entity {
 	// The color to multiply the texture color by
 	private ColorRGBA8 color = ColorRGBA8.WHITE;
 
-	public Entity(int h, float x, float y, int width, int height, float speed, float shotSpeed, float fireRate,
+	public Entity(int hp, float x, float y, int width, int height, float speed, float shotSpeed, float fireRate,
 			int damage, int texture, ColorRGBA8 color) {
-		health = new Health(h);
+		health = new Health(hp);
 		position = new Vector2f(x, y);
 		velocity = new Vector2f(0f, 0f);
 		dimensions = new Vector2i(width, height);
@@ -61,8 +61,8 @@ public abstract class Entity {
 				UV.DEFAULT_UV_RECT, color, texture, position.y);
 	}
 	
-	public void move(float deltaTime) {
-		position = position.add(velocity.mul(deltaTime));
+	public void move(float deltaTime, float idealFrameRate) {
+		position = position.add(velocity.mul(deltaTime / idealFrameRate));
 	}
 
 	// Place holder for collision functions

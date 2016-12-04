@@ -5,8 +5,6 @@ import static org.lwjgl.glfw.GLFW.*;
 import engine.GameScreen;
 import engine.InputManager;
 import engine.MainGame;
-import engine.SoundManager;
-import engine.Timer;
 
 public class App extends MainGame {
 
@@ -20,7 +18,7 @@ public class App extends MainGame {
 	@Override
 	public void onInit() {
 		// TODO Auto-generated method stub
-//		System.out.println(Timer.getTime());
+		// System.out.println(Timer.getTime());
 	}
 
 	@Override
@@ -34,7 +32,7 @@ public class App extends MainGame {
 	@Override
 	public void onExit() {
 		// TODO Auto-generated method stub
-//		System.out.println(Timer.getTime());
+		// System.out.println(Timer.getTime());
 	}
 
 	@Override
