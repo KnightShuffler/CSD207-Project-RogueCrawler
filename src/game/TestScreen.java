@@ -30,7 +30,11 @@ public class TestScreen extends GameScreen {
 	public TestScreen(Window w, Timer timer, SoundManager soundMgr) {
 		this.window = w;
 		spriteBatch = new SpriteBatch();
-		shader = new ShaderProgram("./shaders/vertexShader.vs", "./shaders/fragmentShader.fs");
+		basicShader = new ShaderProgram("basicShader");
+		basicShader.bindAttributes(0, "vertexPosition");
+		basicShader.bindAttributes(1, "vertexColor");
+		basicShader.bindAttributes(2, "vertexUV");
+		basicShader.linkShaders();
 		camera = new Camera(window.getWidth(), window.getHeight());
 		this.timer = timer;
 
@@ -41,7 +45,7 @@ public class TestScreen extends GameScreen {
 
 	private Window window;
 	private SpriteBatch spriteBatch;
-	private ShaderProgram shader;
+	private ShaderProgram basicShader;
 	private Camera camera;
 	private Timer timer;
 
@@ -114,6 +118,7 @@ public class TestScreen extends GameScreen {
 //		soundMgr.playSoundSource("test");
 		
 		camera.setScale(1);
+//		camera.setPosition(new Vector3f(0, 0, 0));
 	}
 
 	@Override
@@ -128,22 +133,6 @@ public class TestScreen extends GameScreen {
 		if (window.getInputManager().isReleased(GLFW_KEY_ESCAPE)) {
 			state = GameScreen.ScreenState.EXIT_APPLICATION;
 		}
-//		
-//		if (window.getInputManager().isDown(GLFW_KEY_W)) {
-//			camera.getPosition().sub(new Vector3f(0, 5, 0));
-//		}
-//
-//		if (window.getInputManager().isDown(GLFW_KEY_A)) {
-//			camera.getPosition().sub(new Vector3f(-5, 0, 0));
-//		}
-//
-//		if (window.getInputManager().isDown(GLFW_KEY_S)) {
-//			camera.getPosition().sub(new Vector3f(0, -5, 0));
-//		}
-//
-//		if (window.getInputManager().isDown(GLFW_KEY_D)) {
-//			camera.getPosition().sub(new Vector3f(5, 0, 0));
-//		}
 
 		if (window.getInputManager().isPressed(GLFW_KEY_Q)) {
 			if (soundMgr.getSoundSource("test").isPlaying()) {
@@ -159,43 +148,39 @@ public class TestScreen extends GameScreen {
 		
 		p.processInput(window.getInputManager());
 		
-//		float totalDeltaTime = timer.fTime / timer.frameCap;
 		float totalDeltaTime = timer.getTotalDeltaTime();
-		int i = 0;
-		while (totalDeltaTime > 0.0f && i < 6) {
-			float deltaTime = Math.min(totalDeltaTime, 1.0f);
-			p.move(deltaTime);
-			camera.setPosition(new Vector3f(-p.getPosition().x, -p.getPosition().y, 0));
+		int frameSimulation = 0;
+		while (totalDeltaTime > 0.0f && frameSimulation < Timer.MAX_FRAME_SIMULATIONS) {
+			float deltaTime = Math.min(totalDeltaTime, Timer.MAX_DELTA_TIME);
+//			p.move(deltaTime, timer.targetFrameRate);
+			p.move(deltaTime, timer.targetFrameRate);
+//			camera.setPosition(new Vector3f(-p.getPosition().x, -p.getPosition().y, 0));
 			
 //			System.out.println("totalDeltaTime: " + totalDeltaTime);
 //			System.out.println("deltaTime: " + deltaTime);
 //			System.out.println("i: " + i);
 			
 			totalDeltaTime -= deltaTime;
-			i++;
+			frameSimulation++;
 		}
 	}
 
 	@Override
 	public void draw() {
-		// TODO Auto-generated method stub
-		glClearDepth(1.0);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-		shader.bind();
-		shader.setUniform("mySampler", 0);
-		shader.setUniform("projection", camera.getProjection().mul(target));
+		basicShader.bind();
+		basicShader.setUniform("mySampler", 0);
+		basicShader.setUniform("projection", camera.getProjection().mul(target));
 
 		spriteBatch.begin(SpriteBatch.SORT_BACK_TO_FRONT);
-		spriteBatch.addGlyph(g1);
-		spriteBatch.addGlyph(g2);
+//		spriteBatch.addGlyph(g1);
+//		spriteBatch.addGlyph(g2);
 		spriteBatch.addGlyph(g3);
 		p.draw(spriteBatch);
 		spriteBatch.end();
 
 		spriteBatch.render();
 
-		shader.unbind();
+		basicShader.unbind();
 	}
 
 }
