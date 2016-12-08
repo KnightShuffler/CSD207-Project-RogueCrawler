@@ -36,7 +36,7 @@ public class Glyph {
 				color.b,
 				color.a,
 				uvRect.x,
-				uvRect.w
+				uvRect.y + uvRect.w
 				);
 		
 		//Top Right
@@ -47,8 +47,8 @@ public class Glyph {
 						color.g,
 						color.b,
 						color.a,
-						uvRect.z,
-						uvRect.w
+						uvRect.x + uvRect.z,
+						uvRect.y + uvRect.w
 						);
 		//Bottom Right
 		vertices[3] = new Vertex(
@@ -58,7 +58,7 @@ public class Glyph {
 						color.g,
 						color.b,
 						color.a,
-						uvRect.z,
+						uvRect.x + uvRect.z,
 						uvRect.y
 						);
 	}

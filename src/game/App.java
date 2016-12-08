@@ -2,6 +2,8 @@ package game;
 
 import static org.lwjgl.glfw.GLFW.*;
 
+import java.io.IOException;
+
 import engine.GameScreen;
 import engine.InputManager;
 import engine.MainGame;
@@ -19,6 +21,7 @@ public class App extends MainGame {
 	public void onInit() {
 		// TODO Auto-generated method stub
 		// System.out.println(Timer.getTime());
+		Room.tileInit();
 	}
 
 	@Override
@@ -47,7 +50,7 @@ public class App extends MainGame {
 		InputManager.addKey(GLFW_KEY_E);
 	}
 
-	public static void main(String[] args) throws InterruptedException {
+	public static void main(String[] args) throws InterruptedException, IOException {
 		App a = new App();
 
 		a.run();

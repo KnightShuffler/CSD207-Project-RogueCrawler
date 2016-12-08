@@ -19,8 +19,8 @@ public class ShaderProgram {
 	public ShaderProgram(String shaderName) {
 		programID = glCreateProgram();
 
-		vertexShaderID = compileShader("./shaders" + shaderName + ".vs", GL_VERTEX_SHADER);
-		fragmentShaderID = compileShader("./shaders" + shaderName + ".fs", GL_FRAGMENT_SHADER);
+		vertexShaderID = compileShader("./shaders/" + shaderName + ".vs", GL_VERTEX_SHADER);
+		fragmentShaderID = compileShader("./shaders/" + shaderName + ".fs", GL_FRAGMENT_SHADER);
 
 		glAttachShader(programID, vertexShaderID);
 		glAttachShader(programID, fragmentShaderID);

@@ -2,6 +2,8 @@ package game;
 
 import static org.lwjgl.glfw.GLFW.*;
 
+import org.joml.Vector2f;
+
 import engine.ColorRGBA8;
 import engine.InputManager;
 import engine.Texture;
@@ -9,16 +11,17 @@ import engine.Texture;
 public final class Player extends Entity {
 	final private static int PLAYER_HEALTH = 3;
 	final private static int PLAYER_WIDTH = 32;
-	final private static int PLAYER_HEIGHT = 32;
-	final private static float PLAYER_SPEED = 200f;
+	final private static float PLAYER_SPEED = 300f;
 	final private static float PLAYER_SHOTSPEED = 5;
 	final private static float PLAYER_FIRERATE = 5;
 	final private static int PLAYER_DAMAGE = 3;
+	
+	final public static Vector2f CAMERA_OFFSET = new Vector2f(PLAYER_WIDTH / 2);
 
 	final public static Texture PLAYER_TEXTURE = new Texture("./textures/player.png");
 
 	public Player(float x, float y) {
-		super(PLAYER_HEALTH, x, y, PLAYER_WIDTH, PLAYER_HEIGHT, PLAYER_SPEED, PLAYER_SHOTSPEED, PLAYER_FIRERATE,
+		super(PLAYER_HEALTH, x, y, PLAYER_WIDTH, PLAYER_SPEED, PLAYER_SHOTSPEED, PLAYER_FIRERATE,
 				PLAYER_DAMAGE, PLAYER_TEXTURE.getTexture(), ColorRGBA8.WHITE);
 	}
 

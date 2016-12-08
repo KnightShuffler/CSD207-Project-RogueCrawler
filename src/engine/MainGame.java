@@ -3,14 +3,6 @@ package engine;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 
-import java.nio.ByteBuffer;
-import java.nio.IntBuffer;
-
-import static org.lwjgl.openal.ALC10.*;
-
-import org.lwjgl.openal.AL;
-import org.lwjgl.openal.ALC;
-import org.lwjgl.openal.ALCCapabilities;
 import org.lwjgl.opengl.GL;
 
 /*
@@ -144,7 +136,7 @@ public abstract class MainGame {
 			// Clear the rendering buffers
 			glClearDepth(1.0);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			
+
 			// Draw to the screen
 			draw();
 			// Swap the buffers

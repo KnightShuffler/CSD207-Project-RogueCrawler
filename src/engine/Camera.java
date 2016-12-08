@@ -14,7 +14,11 @@ public class Camera {
 	}
 
 	public void setPosition(Vector3f position) {
-		this.position = position;
+		this.position = position.mul(-1f);
+	}
+	
+	public void setPosition(Vector2f position) {
+		this.position = new Vector3f(-position.x, -position.y, 1f);
 	}
 
 	public void addPosition(Vector3f position) {
